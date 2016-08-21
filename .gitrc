@@ -32,8 +32,8 @@ function set_prompt {
   local      BLUE='\[\e[0;34m\]'
   local    NORMAL='\[\e[0m\]'
 
-  #PS1="$YELLOW\w $HVIOLET(\$(current_git_branch_with_markers))$BLUE$ $NORMAL"
-  PS1="`EXT_COLOR 154`\w `EXT_COLOR 172`(\$(current_git_branch_with_markers))`EXT_COLOR 7`$ $NORMAL"
+  PS1="$YELLOW\w $HVIOLET(\$(current_git_branch_with_markers))$BLUE$ $NORMAL"
+  #PS1="`EXT_COLOR 154`\w `EXT_COLOR 172`(\$(current_git_branch_with_markers))`EXT_COLOR 7`$ $NORMAL"
 }
 
 set_prompt
