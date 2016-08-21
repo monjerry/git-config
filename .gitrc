@@ -1,0 +1,39 @@
+function parse_git_dirty {
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working directory clean" ]] && echo "*"
+}
+
+function parse_git_stash {
+  [[ $(git stash list 2> /dev/null | tail -n1) != "" ]] && echo "^"
+}
+
+function parse_git_ahead {
+  [[ -n $(git status 2> /dev/null | grep 'Your branch is ahead of') ]] && echo ">"
+}
+
+function parse_git_behind {
+  [[ -n $(git status 2> /dev/null | grep 'Your branch is behind') ]] && echo "<"
+}
+
+function parse_git_diverge {
+  [[ -n $(git status 2> /dev/null | grep 'have diverged') ]] && echo "?"
+}
+
+function current_git_branch {
+  git rev-parse --abbrev-ref HEAD 2> /dev/null
+}
+
+function current_git_branch_with_markers {
+  git rev-parse --abbrev-ref HEAD 2> /dev/null | sed -e "s/\(.*\)/\1$(parse_git_stash)$(parse_git_ahead)$(parse_git_behind)$(parse_git_diverge)$(parse_git_dirty)/"
+}
+
+function set_prompt {                                                                                                                                                                                                                        
+  local    YELLOW='\[\e[0;33m\]'
+  local   HVIOLET='\[\e[1;35m\]'
+  local      BLUE='\[\e[0;34m\]'
+  local    NORMAL='\[\e[0m\]'
+
+  #PS1="$YELLOW\w $HVIOLET(\$(current_git_branch_with_markers))$BLUE$ $NORMAL"
+  PS1="`EXT_COLOR 154`\w `EXT_COLOR 172`(\$(current_git_branch_with_markers))`EXT_COLOR 7`$ $NORMAL"
+}
+
+set_prompt
